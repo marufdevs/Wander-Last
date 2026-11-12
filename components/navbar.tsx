@@ -80,78 +80,78 @@ export function Navbar() {
             Profile
           </Link>
           <Link
-            href="#login"
+            href="sign-in"
             className="text-sm font-medium text-zinc-800 transition-colors hover:text-brand"
           >
             Login
           </Link>
           <Link
-            href="#signup"
+          href="sign-up"
             className="text-sm font-semibold text-zinc-900 transition-colors hover:text-brand"
           >
             Sign Up
           </Link>
-        </div>
-
-        <button
-          type="button"
-          onClick={() => setOpen((value) => !value)}
-          aria-expanded={open}
-          aria-controls="mobile-navigation"
-          aria-label={open ? "Close menu" : "Open menu"}
-          className="col-start-3 justify-self-end p-2 text-zinc-800 lg:hidden"
-        >
-          {open ? (
-            <X className="size-6" aria-hidden="true" />
-          ) : (
-            <Menu className="size-6" aria-hidden="true" />
-          )}
-        </button>
       </div>
 
-      {open ? (
-        <div
-          id="mobile-navigation"
-          className="border-t border-black/5 bg-white px-5 py-4 lg:hidden"
-        >
-          <nav aria-label="Mobile navigation" className="flex flex-col gap-4">
-            {navLinks.map((link) => (
-              <NavLink
-                key={link.label}
-                href={link.href}
-                active={link.label === "Home"}
-                onClick={() => setOpen(false)}
-              >
-                {link.label}
-              </NavLink>
-            ))}
-          </nav>
-          <div className="mt-4 flex items-center gap-5 border-t border-black/5 pt-4">
-            <Link
-              href="#profile"
+      <button
+        type="button"
+        onClick={() => setOpen((value) => !value)}
+        aria-expanded={open}
+        aria-controls="mobile-navigation"
+        aria-label={open ? "Close menu" : "Open menu"}
+        className="col-start-3 justify-self-end p-2 text-zinc-800 lg:hidden"
+      >
+        {open ? (
+          <X className="size-6" aria-hidden="true" />
+        ) : (
+          <Menu className="size-6" aria-hidden="true" />
+        )}
+      </button>
+    </div>
+
+    {open ? (
+      <div
+        id="mobile-navigation"
+        className="border-t border-black/5 bg-white px-5 py-4 lg:hidden"
+      >
+        <nav aria-label="Mobile navigation" className="flex flex-col gap-4">
+          {navLinks.map((link) => (
+            <NavLink
+              key={link.label}
+              href={link.href}
+              active={link.label === "Home"}
               onClick={() => setOpen(false)}
-              className="flex items-center gap-1.5 text-sm font-medium text-zinc-800"
             >
-              <User className="size-4" strokeWidth={1.8} aria-hidden="true" />
-              Profile
-            </Link>
-            <Link
-              href="#login"
-              onClick={() => setOpen(false)}
-              className="text-sm font-medium text-zinc-800"
-            >
-              Login
-            </Link>
-            <Link
-              href="#signup"
-              onClick={() => setOpen(false)}
-              className="text-sm font-semibold text-zinc-900"
-            >
-              Sign Up
-            </Link>
-          </div>
+              {link.label}
+            </NavLink>
+          ))}
+        </nav>
+        <div className="mt-4 flex items-center gap-5 border-t border-black/5 pt-4">
+          <Link
+            href="#profile"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-1.5 text-sm font-medium text-zinc-800"
+          >
+            <User className="size-4" strokeWidth={1.8} aria-hidden="true" />
+            Profile
+          </Link>
+          <Link
+            href="/sign-in"
+            onClick={() => setOpen(false)}
+            className="text-sm font-medium text-zinc-800"
+          >
+            Login
+          </Link>
+          <Link
+            href="/sign-up"
+            onClick={() => setOpen(false)}
+            className="text-sm font-semibold text-zinc-900"
+          >
+            Sign Up
+          </Link>
         </div>
-      ) : null}
-    </header>
-  );
+      </div>
+    ) : null}
+  </header>
+);
 }

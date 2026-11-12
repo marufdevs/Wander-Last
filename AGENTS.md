@@ -10,7 +10,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # Wanderlast
 
-Single-route App Router scaffold with shadcn/ui installed. No tests, API routes, or data layer yet.
+Travel-brand marketing site on a Next.js 16 App Router scaffold with shadcn/ui. No tests, API routes, or data layer.
 
 ## Commands
 
@@ -21,6 +21,16 @@ Use npm (`package-lock.json` is committed). Requires Node 22+ (`cn` declares tha
 - `npm run lint` — ESLint 9 flat config. Single file: `npm run lint -- app/page.tsx`.
 - `npx next typegen && npx tsc --noEmit` — regenerate route types then typecheck. `next-env.d.ts` is gitignored, so run `typegen` before standalone `tsc` on a fresh checkout.
 - No `test` script or test framework is configured; there is nothing to run for tests.
+
+## Structure
+
+- `app/layout.tsx` renders `<Navbar />`, page content, then `<Footer />` for every route. Do not add them per page.
+- `/` (`app/page.tsx`) composes section components from `components/`; `/sign-in` and `/sign-up` each render a form component from `components/` inside the shared layout.
+- Page/UI components are named exports in kebab-case files under `components/`; add `"use client"` only when a component needs state/events (e.g. navbar, footer, carousel). `components/ui/*` is shadcn-generated.
+- `public/Images/` has a capital `I`; reference assets as `/Images/...`. Use `next/image` with `fill` or explicit dimensions.
+- Brand color is the `brand` token (`bg-brand`, `text-brand`, `border-brand`; `--brand: #15a1bf` in `app/globals.css`). Prefer it over hard-coded hex values.
+- Global fonts: Josefin Sans is applied via className on `<html>`; Playfair Display is exposed as `font-serif` through `--font-playfair`. The `--font-geist-*` variable names are starter leftovers.
+- `README.md` is stock create-next-app boilerplate (Geist, yarn/pnpm/bun instructions); trust this file and the config instead.
 
 ## Next.js 16 specifics
 
@@ -36,4 +46,3 @@ Use npm (`package-lock.json` is committed). Requires Node 22+ (`cn` declares tha
 - Class merging is the `cn` package, imported directly: `import { cn } from "cn"`. `lib/utils.ts` only re-exports it. Do not add `clsx` or `tailwind-merge`.
 - Add components with the installed CLI: `npx shadcn add <component>`. They go in `components/ui/`; icons come from `lucide-react`.
 - `@/*` maps to the repo root (there is no `src/`): routes in `app/`, components in `components/`, shared utilities in `lib/`.
-- The global font is Josefin Sans applied on `<html>` via className in `app/layout.tsx`; the `--font-geist-*` names in `app/globals.css` are leftovers from the starter, not wired to it.
