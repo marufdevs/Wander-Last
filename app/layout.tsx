@@ -3,6 +3,7 @@ import { Josefin_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import { Toaster } from "@/components/ui/toast";
 
 const josefinsans = Josefin_Sans({
   variable: "--font-geist-sans",
@@ -30,6 +31,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Navbar />
         {children}
         <Footer />
+        <Toaster />
       </body>
     </html>
   );
