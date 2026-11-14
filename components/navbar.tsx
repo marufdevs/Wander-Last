@@ -7,11 +7,11 @@ import { Menu, User, X } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "./ui/button";
 import { toast } from "./ui/toast";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const navLinks = [
   { label: "Home", href: "/" },
-  { label: "Destinations", href: "#destinations" },
+  { label: "Destinations", href: "/destinations" },
   { label: "My Bookings", href: "#bookings" },
   { label: "Add New Destination", href: "/add-new-destination" },
 ];
@@ -45,6 +45,7 @@ function NavLink({
 
 export function Navbar() {
   const router = useRouter();
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const { data: session } = authClient.useSession();
   const signOut = async () => {
@@ -78,7 +79,11 @@ export function Navbar() {
             <NavLink
               key={link.label}
               href={link.href}
-              active={link.label === "Home"}
+              active={
+                link.href === "/"
+                  ? pathname === "/"
+                  : pathname.startsWith(link.href)
+              }
             >
               {link.label}
             </NavLink>
@@ -162,7 +167,11 @@ export function Navbar() {
               <NavLink
                 key={link.label}
                 href={link.href}
-                active={link.label === "Home"}
+                active={
+                  link.href === "/"
+                    ? pathname === "/"
+                    : pathname.startsWith(link.href)
+                }
                 onClick={() => setOpen(false)}
               >
                 {link.label}

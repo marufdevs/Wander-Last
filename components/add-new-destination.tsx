@@ -1,10 +1,11 @@
 "use client";
 
-import type { FormEvent } from "react";
-import { ChevronDown, Plus, Trash2 } from "lucide-react";
+import { useState, type FormEvent } from "react";
+import { ChevronDown, Loader2, Plus, Trash2 } from "lucide-react";
 import { cn } from "cn";
 
 import { Button } from "@/components/ui/button";
+import { toast } from "@/components/ui/toast";
 
 const inputClassName =
   "h-10 w-full rounded-none border border-zinc-200 bg-zinc-50 px-3 text-sm text-zinc-900 outline-none transition-colors placeholder:text-zinc-400 focus-visible:border-brand focus-visible:ring-1 focus-visible:ring-brand/40";
@@ -20,11 +21,83 @@ const categories = [
   "Luxury",
 ] as const;
 
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+
 export function AddNewDestination() {
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    // TODO: Wire the create-package API here when the backend flow is ready.
+    const form = event.currentTarget;
+    const data = Object.fromEntries(new FormData(form).entries());
+    console.log(data);
+    
+
+    const destinationName = String(data.destinationName ?? "").trim();
+    const country = String(data.country ?? "").trim();
+    const category = String(data.category ?? "").trim();
+    const price = String(data.price ?? "").trim();
+    const duration = String(data.duration ?? "").trim();
+    const departureDate = String(data.departureDate ?? "").trim();
+    const imageUrl = String(data.imageUrl ?? "").trim();
+    const description = String(data.description ?? "").trim();
+
+    if (
+      !destinationName ||
+      !country ||
+      !category ||
+      !price ||
+      !duration ||
+      !departureDate ||
+      !description
+    ) {
+      toast.add({
+        type: "warning",
+        description: "Please fill up all the required fields.",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch(`${apiBaseUrl}/add-new-destination`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          destinationName,
+          country,
+          category,
+          price: Number(price),
+          duration,
+          departureDate,
+          imageUrl,
+          description,
+        }),
+      });
+
+      const result = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        toast.add({
+          type: "error",
+          description: result?.message ?? "Could not create the travel package.",
+        });
+        return;
+      }
+
+      form.reset();
+      toast.add({
+        type: "success",
+        description: result?.message ?? "Travel package added successfully.",
+      });
+    } catch (error) {
+      console.error(error);
+      toast.add({ type: "error", description: "Unable to reach the server." });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -172,7 +245,7 @@ export function AddNewDestination() {
 
         <div className="mt-8 flex flex-col-reverse gap-3 border-t border-zinc-100 pt-6 sm:flex-row sm:justify-end">
           <Button
-            type="button"
+            type="reset"
             variant="outline"
             className="h-11 w-full gap-2 rounded-none border-zinc-200 bg-white text-sm font-medium text-zinc-900 hover:bg-zinc-50 sm:w-auto sm:px-6"
           >
@@ -181,10 +254,15 @@ export function AddNewDestination() {
           </Button>
           <Button
             type="submit"
+            disabled={isSubmitting}
             className="h-11 w-full gap-2 rounded-none bg-brand px-6 text-sm font-semibold text-white hover:bg-brand/90 sm:w-auto"
           >
-            <Plus className="size-4" aria-hidden="true" />
-            Add Travel Package
+            {isSubmitting ? (
+              <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+            ) : (
+              <Plus className="size-4" aria-hidden="true" />
+            )}
+            {isSubmitting ? "Saving..." : "Add Travel Package"}
           </Button>
         </div>
       </form>
