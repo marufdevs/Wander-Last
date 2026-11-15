@@ -10,4 +10,6 @@ export interface Destination {
   description: string;
   createdAt?: string;
   rating?: number;
+  reviews?: number;
+  highlights?: string[];
 }

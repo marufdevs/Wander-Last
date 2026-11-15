@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowUpRight, CalendarDays, MapPin, Star } from "lucide-react";
 
 import type { Destination } from "@/Types/destination";
@@ -24,7 +25,10 @@ function formatPrice(price: number) {
 
 export function DestinationCard({ destination }: { destination: Destination }) {
   return (
-    <article className="group flex flex-col">
+    <Link
+      href={`/destinations/${destination._id}`}
+      className="group flex flex-col"
+    >
       <div className="relative aspect-[2.2/1] w-full overflow-hidden bg-zinc-100">
         <Image
           src={getImageSrc(destination.imageUrl)}
@@ -69,6 +73,6 @@ export function DestinationCard({ destination }: { destination: Destination }) {
           <ArrowUpRight className="size-3.5" strokeWidth={2} aria-hidden="true" />
         </span>
       </div>
-    </article>
+    </Link>
   );
 }
