@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Lock, Mail } from "lucide-react";
 
 import { GoogleIcon } from "@/components/auth/google-icon";
+import { PasswordInput } from "@/components/auth/password-input";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 import { FormEvent } from "react";
@@ -99,27 +100,35 @@ export function SignInForm() {
   return (
     <form onSubmit={onSubmit}>
       <div className="space-y-4">
-        {fields.map(
-          ({ id, label, type, placeholder, autoComplete, icon: Icon }) => (
-            <div key={id}>
+        {fields.map((field) =>
+          field.type === "password" ? (
+            <PasswordInput
+              key={field.id}
+              id={field.id}
+              label={field.label}
+              placeholder={field.placeholder}
+              autoComplete={field.autoComplete}
+            />
+          ) : (
+            <div key={field.id}>
               <label
-                htmlFor={id}
+                htmlFor={field.id}
                 className="mb-1.5 block text-sm font-semibold text-zinc-900"
               >
-                {label}
+                {field.label}
               </label>
               <div className="relative">
-                <Icon
+                <field.icon
                   className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-zinc-400"
                   strokeWidth={1.8}
                   aria-hidden="true"
                 />
                 <input
-                  id={id}
-                  name={id}
-                  type={type}
-                  placeholder={placeholder}
-                  autoComplete={autoComplete}
+                  id={field.id}
+                  name={field.id}
+                  type={field.type}
+                  placeholder={field.placeholder}
+                  autoComplete={field.autoComplete}
                   required
                   className="h-10 w-full rounded-none border border-zinc-200 bg-zinc-50 pl-10 pr-3 text-sm text-zinc-900 outline-none transition-colors placeholder:text-zinc-400 focus-visible:border-brand focus-visible:ring-1 focus-visible:ring-brand/40"
                 />

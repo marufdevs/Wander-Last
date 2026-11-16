@@ -5,6 +5,8 @@ import { Compass } from "lucide-react";
 
 import { DestinationDetail } from "@/components/destinations/detail/destination-detail";
 import type { Destination } from "@/Types/destination";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 const apiBaseUrl =
   process.env.API_URL ??
@@ -15,9 +17,6 @@ export const metadata: Metadata = {
   title: "Destination Details | Wanderlast",
   description: "View the details of this Wanderlast travel package.",
 };
-
-// The shared navbar reads usePathname(), which can't be resolved for an
-// unknown dynamic id at build time. Allow this route to block instead.
 export const instant = false;
 
 type PageProps = {
@@ -25,8 +24,17 @@ type PageProps = {
 };
 
 async function getDestination(id: string): Promise<Destination | null> {
+  const jwtToken = await auth.api.getToken({
+    headers: await headers()
+  })
+
+  console.log(jwtToken?.token);
+  
   const response = await fetch(`${apiBaseUrl}/destinations/${id}`, {
     cache: "no-store",
+    headers:{
+      authorization: jwtToken?.token
+    }
   });
 
   if (!response.ok) {
