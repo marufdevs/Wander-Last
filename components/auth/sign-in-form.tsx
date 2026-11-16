@@ -77,6 +77,25 @@ export function SignInForm() {
       toast.add({ type: "error", description: "Unable to reach the server" });
     }
   };
+  const handleGoogleSignIn = async () => {
+    try {
+      const { error } = await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/",
+      });
+      if (error) {
+        toast.add({
+          type: "error",
+          description: error.message ?? "Google sign in failed",
+        });
+      }
+      // On success the better-auth client has already redirected to Google.
+    } catch (err) {
+      console.error(err);
+      toast.add({ type: "error", description: "Unable to reach the server" });
+    }
+  };
+
   return (
     <form onSubmit={onSubmit}>
       <div className="space-y-4">
@@ -146,12 +165,13 @@ export function SignInForm() {
       </div>
 
       <Button
+        onClick={handleGoogleSignIn}
         type="button"
         variant="outline"
         className="h-11 w-full gap-2.5 rounded-none border-zinc-200 bg-white text-sm font-medium text-zinc-900 hover:bg-zinc-50"
       >
         <GoogleIcon className="size-4" />
-        Sign Up With Google
+        Sign In With Google
       </Button>
 
       <p className="mt-6 text-center text-sm text-zinc-600">

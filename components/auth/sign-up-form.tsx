@@ -106,6 +106,26 @@ export function SignUpForm() {
     }
   };
 
+  const handleGoogleSignUp = async () => {
+    try {
+      const { error } = await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/",
+        newUserCallbackURL: "/",
+      });
+      if (error) {
+        toast.add({
+          type: "error",
+          description: error.message ?? "Google sign up failed",
+        });
+      }
+      // On success the better-auth client has already redirected to Google.
+    } catch (err) {
+      console.error(err);
+      toast.add({ type: "error", description: "Unable to reach the server" });
+    }
+  };
+
   return (
     <form onSubmit={onSubmit}>
       <div className="space-y-4">
@@ -153,6 +173,7 @@ export function SignUpForm() {
       </div>
 
       <Button
+        onClick={handleGoogleSignUp}
         type="button"
         variant="outline"
         className="h-11 w-full gap-2.5 rounded-none border-zinc-200 bg-white text-sm font-medium text-zinc-900 hover:bg-zinc-50"
