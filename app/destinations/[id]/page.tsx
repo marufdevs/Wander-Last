@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { Compass } from "lucide-react";
 
-import { DestinationDetail } from "@/components/destination-detail";
+import { DestinationDetail } from "@/components/destinations/detail/destination-detail";
 import type { Destination } from "@/Types/destination";
 
 const apiBaseUrl =

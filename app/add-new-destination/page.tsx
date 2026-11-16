@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { AddNewDestination } from "@/components/add-new-destination";
+import { AddNewDestination } from "@/components/add-new-destination/add-new-destination";
 
 export const metadata: Metadata = {
   title: "Add New Travel Package | Wanderlast",

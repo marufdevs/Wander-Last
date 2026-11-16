@@ -26,7 +26,7 @@ Use npm (`package-lock.json` is committed). Requires Node 22+ (`cn` declares tha
 
 - `app/layout.tsx` renders `<Navbar />`, page content, then `<Footer />` for every route. Do not add them per page.
 - `/` (`app/page.tsx`) composes section components from `components/`; `/sign-in` and `/sign-up` each render a form component inside the shared layout.
-- Page/UI components are named exports in kebab-case files under `components/`; add `"use client"` only when a component needs state/events (navbar, footer, forms). `components/ui/*` is shadcn-generated.
+- Page/UI components are named exports in kebab-case files under `components/`, grouped one folder per route (`home/`, `destinations/`, `destinations/detail/`, `add-new-destination/`, `bookings/`, `profile/`, `auth/`) plus shared `layout/` and `ui/`. See `components/README.md` for the route map. Add `"use client"` only when a component needs state/events (navbar, footer, forms). `components/ui/*` is shadcn-generated.
 - `lib/auth.ts` constructs the better-auth server instance; `app/api/auth/[...all]/route.ts` exposes it with `toNextJsHandler`.
 - `public/Images/` has a capital `I`; reference assets as `/Images/...`. Use `next/image` with `fill` or explicit dimensions.
 - Brand color is the `brand` token (`bg-brand`, `text-brand`, `border-brand`; `--brand: #15a1bf` in `app/globals.css`). Prefer it over hard-coded hex values.

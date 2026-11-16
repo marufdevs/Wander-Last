@@ -1,7 +1,7 @@
-import { CallToAction } from "@/components/call-to-action";
-import { HeroBanner } from "@/components/hero-banner";
-import { Testimonials } from "@/components/testimonials";
-import { WhyChooseWanderlust } from "@/components/why-choose-wanderlust";
+import { CallToAction } from "@/components/home/call-to-action";
+import { HeroBanner } from "@/components/home/hero-banner";
+import { Testimonials } from "@/components/home/testimonials";
+import { WhyChooseWanderlust } from "@/components/home/why-choose-wanderlust";
 
 export default function Home() {
   return (

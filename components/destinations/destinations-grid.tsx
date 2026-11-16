@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { ChevronDown } from "lucide-react";
 
-import { DestinationCard } from "@/components/destination-card";
+import { DestinationCard } from "@/components/destinations/destination-card";
 import type { Destination } from "@/Types/destination";
 
 const priceRanges = [

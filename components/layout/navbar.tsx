@@ -5,8 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Menu, User, X } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
-import { Button } from "./ui/button";
-import { toast } from "./ui/toast";
+import { Button } from "@/components/ui/button";
+import { toast } from "@/components/ui/toast";
 import { usePathname, useRouter } from "next/navigation";
 
 const navLinks = [

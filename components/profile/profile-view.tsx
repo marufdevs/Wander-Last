@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { cn } from "cn";
 
-import { EditProfileDialog } from "@/components/edit-profile-dialog";
+import { EditProfileDialog } from "@/components/profile/edit-profile-dialog";
 import { authClient } from "@/lib/auth-client";
 
 function getInitials(name?: string | null) {

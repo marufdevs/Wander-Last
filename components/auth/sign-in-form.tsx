@@ -1,25 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { Lock, Mail, User } from "lucide-react";
+import { Lock, Mail } from "lucide-react";
 
-import { GoogleIcon } from "@/components/google-icon";
+import { GoogleIcon } from "@/components/auth/google-icon";
 import { Button } from "@/components/ui/button";
-import { FormEvent } from "react";
 import { authClient } from "@/lib/auth-client";
-import { toast } from "./ui/toast";
+import { FormEvent } from "react";
+import { toast } from "@/components/ui/toast";
 import { useRouter } from "next/navigation";
 
-
 const fields = [
-  {
-    id: "name",
-    label: "Full Name",
-    type: "text",
-    placeholder: "Enter your name",
-    autoComplete: "name",
-    icon: User,
-  },
   {
     id: "email",
     label: "Email Address",
@@ -32,57 +23,38 @@ const fields = [
     id: "password",
     label: "Password",
     type: "password",
-    placeholder: "Create a password",
-    autoComplete: "new-password",
-    icon: Lock,
-  },
-  {
-    id: "confirm_password",
-    label: "Confirm Password",
-    type: "password",
-    placeholder: "Confirm your password",
-    autoComplete: "new-password",
+    placeholder: "Enter your password",
+    autoComplete: "current-password",
     icon: Lock,
   },
 ] as const;
 
 const handleEmpty = (data: Record<string, FormDataEntryValue>) => {
-  const { name, email, password, confirm_password } = data;
+  const { email, password } = data;
 
-  if (!name || !email || !password || !confirm_password) {
+  if (!email || !password) {
     toast.add({
       type: "warning",
       description: "Please fill up all the required fields.",
     });
     return false;
   }
-
-  if (password !== confirm_password) {
-    toast.add({
-      type: "warning",
-      description: "Passwords do not match!",
-    });
-    return false;
-  }
-
   return true;
 };
 
-export function SignUpForm() {
+export function SignInForm() {
   const router = useRouter()
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const data = Object.fromEntries(formData.entries());
-
+    console.log(data);
     if (!handleEmpty(data)) {
       return;
     }
-
-    const { name, email, password } = data;
+    const {email, password } = data;
     try {
-      const { data: user, error } = await authClient.signUp.email({
-        name: String(name),
+      const { data: user, error } = await authClient.signIn.email({
         email: String(email),
         password: String(password),
       });
@@ -96,16 +68,15 @@ export function SignUpForm() {
       if (user) {
         toast.add({
           type: "success",
-          description: "Successfully Created the Account",
+          description: "Successfully Login your Account",
         });
-        router.push("/")
+        router.push("/");
       }
     } catch (err) {
       console.error(err);
       toast.add({ type: "error", description: "Unable to reach the server" });
     }
   };
-
   return (
     <form onSubmit={onSubmit}>
       <div className="space-y-4">
@@ -139,16 +110,38 @@ export function SignUpForm() {
         )}
       </div>
 
+      <div className="mt-4 flex items-center justify-between gap-4">
+        <label
+          htmlFor="remember-me"
+          className="flex items-center gap-2 text-sm text-zinc-600"
+        >
+          <input
+            id="remember-me"
+            name="remember-me"
+            type="checkbox"
+            className="size-4 rounded-none border-zinc-300 accent-brand"
+          />
+          Remember me
+        </label>
+
+        <Link
+          href="#"
+          className="text-sm font-medium text-brand hover:underline"
+        >
+          Forgot password?
+        </Link>
+      </div>
+
       <Button
         type="submit"
-        className="mt-6 h-11 w-full rounded-none bg-brand text-sm font-medium text-white hover:bg-brand/90"
+        className="mt-5 h-11 w-full rounded-none bg-brand text-sm font-medium text-white hover:bg-brand/90"
       >
-        Create Account
+        Sign In
       </Button>
 
       <div className="my-5 flex items-center gap-4">
         <span className="h-px flex-1 bg-zinc-200" aria-hidden="true" />
-        <span className="text-sm text-zinc-500">Or sign up with</span>
+        <span className="text-sm text-zinc-500">Or continue with</span>
         <span className="h-px flex-1 bg-zinc-200" aria-hidden="true" />
       </div>
 
@@ -162,12 +155,12 @@ export function SignUpForm() {
       </Button>
 
       <p className="mt-6 text-center text-sm text-zinc-600">
-        Already have an account?{" "}
+        Don&apos;t have an account?{" "}
         <Link
-          href="/sign-in"
+          href="/sign-up"
           className="font-semibold text-brand hover:underline"
         >
-          Sign In
+          Sign Up
         </Link>
       </p>
     </form>

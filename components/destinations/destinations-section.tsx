@@ -2,7 +2,7 @@ import Link from "next/link";
 import { connection } from "next/server";
 import { Compass, MapPinned } from "lucide-react";
 
-import { DestinationsGrid } from "@/components/destinations-grid";
+import { DestinationsGrid } from "@/components/destinations/destinations-grid";
 import type { Destination } from "@/Types/destination";
 
 const apiBaseUrl =

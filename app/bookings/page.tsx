@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { BookingsList } from "@/components/bookings-list";
+import { BookingsList } from "@/components/bookings/bookings-list";
 
 export const metadata: Metadata = {
   title: "My Bookings | Wanderlast",

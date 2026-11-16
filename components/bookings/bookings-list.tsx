@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Compass, MapPinned } from "lucide-react";
 
-import { BookingCard } from "@/components/booking-card";
+import { BookingCard } from "@/components/bookings/booking-card";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 import type { Booking } from "@/Types/booking";

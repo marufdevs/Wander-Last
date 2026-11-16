@@ -8,9 +8,9 @@ import {
   Star,
 } from "lucide-react";
 
-import { DeleteDestinationButton } from "@/components/delete-destination-button";
-import { DestinationBookingCard } from "@/components/destination-booking-card";
-import { EditDestinationDialog } from "@/components/edit-destination-dialog";
+import { DeleteDestinationButton } from "@/components/destinations/detail/delete-destination-button";
+import { DestinationBookingCard } from "@/components/destinations/detail/destination-booking-card";
+import { EditDestinationDialog } from "@/components/destinations/detail/edit-destination-dialog";
 import type { Destination } from "@/Types/destination";
 
 const fallbackImage = "/Images/Banner.png";

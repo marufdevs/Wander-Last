@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-import { DestinationsSection } from "@/components/destinations-section";
-import { DestinationsSkeleton } from "@/components/destinations-skeleton";
+import { DestinationsSection } from "@/components/destinations/destinations-section";
+import { DestinationsSkeleton } from "@/components/destinations/destinations-skeleton";
 
 export const metadata: Metadata = {
   title: "Explore All Destinations | Wanderlast",
