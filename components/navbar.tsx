@@ -12,7 +12,7 @@ import { usePathname, useRouter } from "next/navigation";
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "Destinations", href: "/destinations" },
-  { label: "My Bookings", href: "#bookings" },
+  { label: "My Bookings", href: "/bookings" },
   { label: "Add New Destination", href: "/add-new-destination" },
 ];
 

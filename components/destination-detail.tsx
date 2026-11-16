@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowLeft,
-  ArrowRight,
   CalendarDays,
   Check,
   MapPin,
@@ -10,17 +9,11 @@ import {
 } from "lucide-react";
 
 import { DeleteDestinationButton } from "@/components/delete-destination-button";
+import { DestinationBookingCard } from "@/components/destination-booking-card";
 import { EditDestinationDialog } from "@/components/edit-destination-dialog";
-import { Button } from "@/components/ui/button";
 import type { Destination } from "@/Types/destination";
 
 const fallbackImage = "/Images/Banner.png";
-
-const perks = [
-  "Free cancellation up to 7 days",
-  "Travel insurance included",
-  "24/7 customer support",
-];
 
 // TODO: Remove these defaults once the API returns highlights for every package.
 const defaultHighlights = [
@@ -42,14 +35,6 @@ function getImageSrc(imageUrl: string) {
   } catch {
     return fallbackImage;
   }
-}
-
-function formatPrice(price: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(price);
 }
 
 function formatDuration(duration: string) {
@@ -181,49 +166,7 @@ export function DestinationDetail({
           </section>
         </div>
 
-        <aside className="border border-zinc-200 bg-white p-5 shadow-[0_2px_10px_rgba(0,0,0,0.06)] lg:sticky lg:top-24">
-          <p className="text-xs text-zinc-500">Starting from</p>
-          <p className="mt-1 text-3xl font-semibold leading-none text-zinc-900">
-            {formatPrice(destination.price)}
-          </p>
-          <p className="mt-1 text-xs text-zinc-500">per person</p>
-
-          <div className="mt-5">
-            <label htmlFor="departure-date" className="sr-only">
-              Departure date
-            </label>
-            <input
-              id="departure-date"
-              name="departureDate"
-              type="date"
-              defaultValue={destination.departureDate?.slice(0, 10)}
-              className="h-10 w-full rounded-none border border-zinc-200 bg-zinc-50 px-3 text-sm text-zinc-900 outline-none transition-colors focus-visible:border-brand focus-visible:ring-1 focus-visible:ring-brand/40"
-            />
-            <Button
-              type="button"
-              className="mt-3 h-11 w-full gap-2 rounded-none bg-brand text-sm font-semibold text-white hover:bg-brand/90"
-            >
-              Book Now
-              <ArrowRight className="size-4" aria-hidden="true" />
-            </Button>
-          </div>
-
-          <ul className="mt-5 space-y-2 border-t border-zinc-100 pt-4">
-            {perks.map((perk) => (
-              <li
-                key={perk}
-                className="flex items-start gap-2 text-xs leading-5 text-zinc-600"
-              >
-                <Check
-                  className="mt-0.5 size-3.5 shrink-0 text-emerald-600"
-                  strokeWidth={2.5}
-                  aria-hidden="true"
-                />
-                {perk}
-              </li>
-            ))}
-          </ul>
-        </aside>
+        <DestinationBookingCard destination={destination} />
       </div>
     </div>
   );
