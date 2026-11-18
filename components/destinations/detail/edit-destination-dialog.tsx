@@ -14,6 +14,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/toast";
+import { authClient } from "@/lib/auth-client";
 import type { Destination } from "@/Types/destination";
 
 const apiBaseUrl =
@@ -117,11 +118,17 @@ export function EditDestinationDialog({
     setIsSubmitting(true);
 
     try {
+      const { data: tokenData } = await authClient.token();
+      const token = tokenData?.token;
+
       const response = await fetch(
         `${apiBaseUrl}/destinations/${destination._id}`,
         {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
           body: JSON.stringify({
             destinationName,
             country,

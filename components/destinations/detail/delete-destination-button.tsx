@@ -13,6 +13,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/toast";
+import { authClient } from "@/lib/auth-client";
 
 const apiBaseUrl =
   process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
@@ -42,9 +43,15 @@ export function DeleteDestinationButton({
     setIsDeleting(true);
 
     try {
+      const { data: tokenData } = await authClient.token();
+      const token = tokenData?.token;
+
       const response = await fetch(
         `${apiBaseUrl}/destinations/${destinationId}`,
-        { method: "DELETE" },
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        },
       );
 
       const result = await response.json().catch(() => null);

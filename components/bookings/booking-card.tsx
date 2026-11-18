@@ -25,6 +25,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/toast";
+import { authClient } from "@/lib/auth-client";
 import type { Booking } from "@/Types/booking";
 
 const apiBaseUrl =
@@ -125,6 +126,9 @@ export function BookingCard({
     setIsDeleting(true);
 
     try {
+      const { data: tokenData } = await authClient.token();
+      const token = tokenData?.token;
+
       const ownerEmail = booking.user?.email;
       const query = ownerEmail
         ? `?email=${encodeURIComponent(ownerEmail)}`
@@ -132,7 +136,10 @@ export function BookingCard({
 
       const response = await fetch(
         `${apiBaseUrl}/bookings/${booking._id}${query}`,
-        { method: "DELETE" },
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        },
       );
 
       if (!response.ok) {

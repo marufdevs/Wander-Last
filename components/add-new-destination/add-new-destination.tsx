@@ -6,6 +6,7 @@ import { cn } from "cn";
 
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/toast";
+import { authClient } from "@/lib/auth-client";
 
 const inputClassName =
   "h-10 w-full rounded-none border border-zinc-200 bg-zinc-50 px-3 text-sm text-zinc-900 outline-none transition-colors placeholder:text-zinc-400 focus-visible:border-brand focus-visible:ring-1 focus-visible:ring-brand/40";
@@ -31,8 +32,6 @@ export function AddNewDestination() {
 
     const form = event.currentTarget;
     const data = Object.fromEntries(new FormData(form).entries());
-    console.log(data);
-    
 
     const destinationName = String(data.destinationName ?? "").trim();
     const country = String(data.country ?? "").trim();
@@ -62,9 +61,15 @@ export function AddNewDestination() {
     setIsSubmitting(true);
 
     try {
+      const { data: tokenData } = await authClient.token();
+      const token = tokenData?.token;
+
       const response = await fetch(`${apiBaseUrl}/add-new-destination`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({
           destinationName,
           country,

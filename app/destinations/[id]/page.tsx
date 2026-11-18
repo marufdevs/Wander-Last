@@ -26,15 +26,18 @@ type PageProps = {
 async function getDestination(id: string): Promise<Destination | null> {
   const jwtToken = await auth.api.getToken({
     headers: await headers()
-  })
+  });
+  const token = jwtToken?.token;
 
-  console.log(jwtToken?.token);
+  if (!token) {
+    return null;
+  }
   
   const response = await fetch(`${apiBaseUrl}/destinations/${id}`, {
     cache: "no-store",
-    headers:{
-      authorization: jwtToken?.token
-    }
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
 
   if (!response.ok) {

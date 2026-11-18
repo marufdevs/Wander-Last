@@ -47,35 +47,48 @@ export function BookingsList() {
     }
 
     let active = true;
+    const userEmail = email;
 
-    fetch(`${apiBaseUrl}/bookings/${encodeURIComponent(email)}`, {
-      cache: "no-store",
-    })
-      .then((response) => {
+    async function loadBookings() {
+      try {
+        const { data: tokenData } = await authClient.token();
+        const token = tokenData?.token;
+
+        const response = await fetch(
+          `${apiBaseUrl}/bookings/${encodeURIComponent(userEmail)}`,
+          {
+            cache: "no-store",
+            headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+          },
+        );
+
         if (!response.ok) {
           throw new Error(`Request failed with status ${response.status}`);
         }
 
-        return response.json() as Promise<Booking[]>;
-      })
-      .then((data) => {
+        const data: Booking[] = await response.json();
+
         if (!active) {
           return;
         }
 
         setBookings(Array.isArray(data) ? data : []);
         setFailed(false);
-        setIsLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         if (!active) {
           return;
         }
 
         console.error(error);
         setFailed(true);
-        setIsLoading(false);
-      });
+      } finally {
+        if (active) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    void loadBookings();
 
     return () => {
       active = false;

@@ -63,9 +63,15 @@ export function DestinationBookingCard({
     setIsBooking(true);
 
     try {
+      const { data: tokenData } = await authClient.token();
+      const token = tokenData?.token;
+
       const response = await fetch(`${apiBaseUrl}/booking`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({
           user: {
             id: user.id,
